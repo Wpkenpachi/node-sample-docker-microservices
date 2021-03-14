@@ -32,6 +32,20 @@ class AccountService {
 
 
   }
+
+  static async fetchBalance(accountId) {
+    try {
+      const [balance] = await Database
+        .table('accounts')
+        .where('id', accountId)
+        .where('active_flag', 1)
+        .pluck('balance');
+
+      return balance
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
 }
 
 module.exports = AccountService;

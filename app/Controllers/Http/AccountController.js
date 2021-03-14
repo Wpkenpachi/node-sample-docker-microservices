@@ -43,19 +43,14 @@ class AccountController {
       return response.status(422).send(validation.messages());
     }
 
-    const [balance] = await Database
-      .table('accounts')
-      .where('id', data.accountId)
-      .where('active_flag', 1)
-      .pluck('balance');
-
-    if (!balance) {
-      return response.status(404).json({
-        msg: "Account not found"
+    try {
+      const balance = await AccountService.queryBalance(data.accountId);
+      return response.send({ balance });
+    } catch (error) {
+      return response.status(400).json({
+        error: error.message
       });
     }
-
-    return response.send({ balance });
   }
 
   async blockAccount({ request, response }) {
