@@ -1,85 +1,283 @@
+# Sample NodeJS Project (JS)
+This sample was based on this challenge <a href="ORIGINAL_README.md" target="_blank"> desafio-dev-api-rest </a>
 
-### Desafio
-Olá, queremos convidá-lo(a) a participar do nosso desafio de seleção.  Pronto(a) para participar? Seu trabalho será visto pelo nosso time e você receberá um feedback ao final sobre o que achamos do seu trabalho. Não é legal?
+# Local Running Steps
+First of all, install project dependencies
+```bash
 
-### Sobre a oportunidade 
-A vaga é para Desenvolvedor(a), temos vagas com diversos níveis de senioridade e para cada um deles utilizaremos critérios específicos considerando este aspecto, combinado? 
-Se você for aprovad(a) nesta etapa, será convidado para uma entrevista final.
+$ npm install
 
-### Desafio Técnico
-  Nós trabalhamos com meios de pagamento e nada melhor do que um bom sistema para gestão de contas:
-  
-  - Pré-requisitos:
-    ```
-    * Desenvolver os recursos em API Rest que realizam operações bancárias com a entidade conta a seguir:
-    ```
-    | Contas | Tipo |
-    |-|-|
-    | idConta | Numérico |
-    | idPessoa | Numérico |
-    | saldo | Monetário |
-    | limiteSaqueDiario | Monetário |
-    | flagAtivo | Condicional |
-    | tipoConta | Numérido |
-    | dataCriacao | Data |
-
-    ```
-    * Tabela de transações realizadas na conta
-    ```
-    | Transacoes | Tipo |
-    |-|-|
-    | idTransacao | Numérico |
-    | idConta | Numérico |
-    | valor | Monetário |
-    | dataTransacao | Data |
-
-    ```
-    * P.S.: Não é necessário realizar operações com a tabela pessoa, mas é necessária a criação da tabela para mapeamento da relação com a conta e enviar script de criação de pelo menos uma pessoa.
-    ```
-
-    | Pessoas | Tipo |
-    |-|-|
-    | idPessoa | Numérico |
-    | nome | Texto |
-    | cpf | Texto |
-    | dataNascimento | Data |    
-
-  - O que esperamos como escopo mínimo:
-    - [x] Implementar path que realiza a criação de uma conta;
-    - [x] Implementar path que realiza operação de depósito em uma conta;
-    - [x] Implementar path que realiza operação de consulta de saldo em determinada conta;
-    - [x] Implementar path que realiza operação de saque em uma conta;
-    - [ ] Implementar path que realiza o bloqueio de uma conta;
-    - [ ] Implementar path que recupera o extrato de transações de uma conta;
-
-  - O que será diferencial:
-    - [ ] Implementar extrato por período;
-    - [ ] Elaborar manual de execução;
-    - [ ] Elaborar documentação;
-    - [ ] Elaborar testes.
-    
-  - O que vamos avaliar:
-    ```
-    * Seu código; 
-    * Dockerfile ou docker-compose do serviço;
-    * Script de banco;
-    * Organização;
-    * Boas práticas;
-    * Diferenciais; 
-    ```
-
-  - Teste para o time de Arquitetura? 
-    ```
-    * Baseado no que foi desenvolvido nos envie uma solução da Arquitetura utilizando serviços na nuvem como a AWS (diferencial), Azure e GCP;
-    * Junto com as instruções de execução, explique qual Design Pattern você utilizou e por que o escolheu para a sua solução.
-    ```
+```
 
 
-### Instruções
-      1. Faça o fork do desafio;
-      2. Crie um repositório privado no seu github para o projeto e adicione como colaborador o usuário wesleyjoliveira;
-      3. Desenvolva. Você terá 7 (sete) dias a partir da data do envio do desafio; 
-      4. Após concluir seu trabalho faça um push; 
-      5. Envie um e-mail à pessoa que está mantendo o contato com você durante o processo notificando a finalização do desafio para validação.
+#### Database Config
+Find environment file _.env_ on root directory and config these Parameteres
+- Obs: You can specifie another database. For more information follow the adonis [docs](https://adonisjs.com/docs/4.0/database)
 
-### Api Doc
+```env
+DB_CONNECTION=pg
+
+DB_HOST=127.0.0.1
+
+DB_PORT=5432
+
+DB_USER=postgres
+
+DB_PASSWORD=postgres
+
+DB_DATABASE=node-sample-project-js
+
+```
+
+#### Run migrations
+To create project tables after database credentials set
+```bash
+$ adonis migration:run
+```
+
+
+#### Serving Api
+You can specify custom _HOST_ and _PORT_ on environment file _.env_ on root directory
+```bash
+$ npm start
+
+> adonis-fullstack-app@4.1.0 start
+
+> node server.js
+
+
+info: serving app on http://127.0.0.1:3333
+```
+
+# Api Doc
+Api endpoints and request and response cmoposition
+
+## Create Account
+Create Account endpoint will create behind the scenes:
+- A Person. With documentNumber and name infos
+- A Account. With the person id
+
+### Request
+- Url: http://localhost:3333/api/account/create
+- Method: POST
+- Headers:
+```json
+{
+  "Content-Type": "application/json"
+}
+```
+
+- Request Body
+```json
+{
+  "name": "Wesley Paulo", // Fullname String
+  "documentNumber": "04203377099", //  Cpf String
+  "bornDate": "1996-06-17", //  YYYY-MM-DD String
+  "accountType": 2 // 1: Savings Account, 2: Checking Account Number
+}
+```
+
+- Response Body
+```json
+{
+  "status": "Account Successfully created",
+  "data": {
+    "accountId": 7
+  }
+}
+```
+
+## GetAccountBalance
+Get Account balance endpoint will get an account balance:
+- Obs: The balance will be returned only if the account is not blocked
+
+### Request
+- Url: http://localhost:3333/api/account/balance
+- Method: POST
+- Headers:
+```json
+{
+  "Content-Type": "application/json"
+}
+```
+
+- Body
+```json
+{
+  "accountId": 2 // accountId as number
+}
+```
+
+- Response Body
+```json
+{
+  "balance": 0
+}
+```
+
+## Deposit on Account
+Deposit on Account endpoint will deposit some amount of value on person account, and create a transaction register:
+
+- Obs: The deposit and the transaction will be done only if the account is not blocked
+
+
+### Request
+
+- Url: http://localhost:3333/api/transaction/deposit
+
+- Method: POST
+
+- Headers:
+
+```json
+
+{
+  "Content-Type": "application/json"
+}
+
+```
+
+
+- Body
+
+```json
+
+{
+  "accountId": 2, // accountId as number
+  "amount": 15000 // amount as number ( amount in cents 15000 -> R$ 150,00 )
+}
+
+```
+
+
+- Response Body
+
+```json
+
+{
+  "data": {
+    "transactionId": 3
+  }
+}
+
+```
+
+## Get Bank Statement
+Get Bank Statement endpoint will return your transactions between two
+dates (start and end):
+
+Obs:
+- Alternatively you can pass just one specific date.
+
+- If passing just start date, you'll fetch transactions starting from that date until the last one transaction register
+
+- If passing just end date, you'll fetch transactions registers from the first transaction date until the end date specified 
+
+- Obs: For start and end dates -> paginated with limited 500 results
+
+- Obs: For single start/end date -> paginated with limited 100 results
+
+- Obs: If no date is specified, will be return the last 100 transactions
+
+
+### Request
+
+- Url: http://localhost:3333/api/account/bankstatement
+
+- Method: POST
+
+- Headers:
+
+```json
+
+{
+  "Content-Type": "application/json"
+}
+
+```
+
+
+- QueryString 
+
+```
+
+start=2021-01-01  // (Optional) YYYY-MM-DD
+
+end=2021-02-01    // (Optional) YYYY-MM-DD
+
+```
+
+
+- Body
+
+```json
+
+{
+  "accountId": 2,  // accountId as number
+  "page": 1        // [Optional] page number
+}
+
+```
+
+
+- Response Body
+
+```json
+
+{
+  "total": "2",
+  "perPage": 100,
+  "page": 1,
+  "lastPage": 1,
+  "data": [ // data has a list of transactions
+    {
+      "id": 3,
+      "value": 21000,
+      "transaction_date": "2021-03-14T17:28:57.478Z"
+    },
+    {
+      "id": 2,
+      "value": 20000,
+      "transaction_date": "2021-01-25T17:27:46.000Z"
+    }
+  ],
+  "metadata": {
+    "total_amount": 41000 // This metadata has a sum of transaction values
+  }
+}
+
+```
+
+## Block Account
+Block account endpoint will block some account from accountId:
+- Obs: Accounts blocked cannont query bank statements, balance, make deposits or withdrawns
+
+### Request
+- Url: http://localhost:3333/api/account/block
+- Method: POST
+- Headers:
+```json
+{
+  "Content-Type": "applicatin/json"
+}
+```
+
+- Body
+```json
+{
+  "accountId": 2 // accountId as number
+}
+```
+
+- Response Body
+```json
+{
+  "status": "Account has been blocked",
+  "data": {
+    "accountId": 6
+  }
+}
+```
+
+## Manually Testing
+You can also import [insomnia yml file](node-sample-project-js-insomnia.yaml) to test each endpoints

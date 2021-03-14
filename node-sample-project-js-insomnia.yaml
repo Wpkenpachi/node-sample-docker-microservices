@@ -1,0 +1,551 @@
+_type: export
+__export_format: 4
+__export_date: 2021-03-14T19:31:47.529Z
+__export_source: insomnia.desktop.app:v2021.1.1
+resources:
+  - _id: req_b6de165b22684a8c87fc667ec221cfc0
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615749327099
+    created: 1615739841809
+    url: "{{ _.baseURL }}/"
+    name: Welcome
+    description: >-
+      ## Local Running Steps
+
+      First of all, install project dependencies
+
+
+      ```bash
+
+      $ npm install
+
+      ```
+
+
+      #### Database Config
+
+      Find environment file _.env_ on root directory and config these Parameteres
+
+      - Obs: You can specifie another database. For more information follow the adonis [docs](https://adonisjs.com/docs/4.0/database)
+
+
+      ```env
+
+      DB_CONNECTION=pg
+
+      DB_HOST=127.0.0.1
+
+      DB_PORT=5432
+
+      DB_USER=postgres
+
+      DB_PASSWORD=postgres
+
+      DB_DATABASE=node-sample-project-js
+
+      ```
+
+      #### Run migrations
+
+      To create project tables after database credentials set
+
+
+      ```bash
+
+      $ adonis migration:run
+
+      ```
+
+
+      #### Serving Api
+
+      You can specify custom _HOST_ and _PORT_ on environment file _.env_ on root directory
+
+
+      ```bash
+
+      $ npm start
+
+      > adonis-fullstack-app@4.1.0 start
+
+      > node server.js
+
+
+      info: serving app on http://127.0.0.1:3333
+
+      ```
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1615739962549
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_4b1ca8f673224460823c3d75b77c44a9
+    parentId: null
+    modified: 1615738820270
+    created: 1615738820270
+    name: NodeSampleProjectJS
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_1b2b4aa511dd4e44b1857647d06f39d5
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615744885134
+    created: 1615739962499
+    url: "{{ _.baseURL }}/api/account/create"
+    name: CreateAccount
+    description: |-
+      Create Account endpoint will create behind the scenes:
+      - A Person. With documentNumber and name infos
+      - A Account. With the person id
+
+      ### Request
+      - Url: {{ _.baseURL }}/api/account/create
+      - Method: POST
+      - Headers:
+      ```json
+      {
+        "Content-Type": "applicatin/json"
+      }
+      ```
+
+      - Request Body
+      ```json
+      {
+        "name": "Wesley Paulo", // Fullname String
+        "documentNumber": "04203377099", //  Cpf String
+        "bornDate": "1996-06-17", //  YYYY-MM-DD String
+        "accountType": 2 // 1: Savings Account, 2: Checking Account Number
+      }
+      ```
+
+      - Response Body
+      ```json
+      {
+        "status": "Account Successfully created",
+        "data": {
+          "accountId": 7
+        }
+      }
+      ```
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Paul William",
+        	"documentNumber": "04203377097",
+        	"bornDate": "1996-06-17",
+        	"accountType": 2
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_c1ef42b1e27b4aec8c4bdb1495d8bee0
+    authentication: {}
+    metaSortKey: -1615739962499
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ca760becdfab46c7a2ecc3efb05929f8
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615748630971
+    created: 1615741203999
+    url: "{{ _.baseURL }}/api/account/balance"
+    name: GetAccountBalance
+    description: |-
+      Get Account balance endpoint will get an account balance:
+      - Obs: The balance will be returned only if the account is not blocked
+
+      ### Request
+      - Url: {{ _.baseURL }}/api/account/balance
+      - Method: POST
+      - Headers:
+      ```json
+      {
+        "Content-Type": "applicatin/json"
+      }
+      ```
+
+      - Body
+      ```json
+      {
+        "accountId": 2 // accountId as number
+      }
+      ```
+
+      - Response Body
+      ```json
+      {
+        "balance": 0
+      }
+      ```
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"accountId": 6
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_28e6d88121344c06a6157c74910133f6
+    authentication: {}
+    metaSortKey: -1615739962449
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_6f97ad196ee5428d9291328e0ec7ee93
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615748674690
+    created: 1615742197799
+    url: "{{ _.baseURL }}/api/transaction/deposit"
+    name: DepositOnAccount
+    description: >-
+      Deposit on Account endpoint will deposit some amount of value on person
+      account, and create
+
+      a transaction register:
+
+      - Obs: The deposit and the transaction will be done only if the account is not blocked
+
+
+      ### Request
+
+      - Url: {{ _.baseURL }}/api/transaction/deposit
+
+      - Method: POST
+
+      - Headers:
+
+      ```json
+
+      {
+        "Content-Type": "applicatin/json"
+      }
+
+      ```
+
+
+      - Body
+
+      ```json
+
+      {
+        "accountId": 2, // accountId as number
+        "amount": 15000 // amount as number ( amount in cents 15000 -> R$ 150,00 )
+      }
+
+      ```
+
+
+      - Response Body
+
+      ```json
+
+      {
+        "data": {
+          "transactionId": 3
+        }
+      }
+
+      ```
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"accountId": 7,
+        	"amount": 21000
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_51df3d9fb8bb44bb90b6cdd6efe33ab5
+    authentication: {}
+    metaSortKey: -1615739962399
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2af6e5d4802945188e24207f0f9d2f18
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615748291853
+    created: 1615746045768
+    url: "{{ _.baseURL }}/api/account/bankstatement"
+    name: GetBankStatement
+    description: >-
+      Get Bank Statement endpoint will return your transactions between two
+      dates (start and end):
+
+      - Alternatively you can pass just one specific date.
+
+      - If passing just start date, you'll fetch transactions starting from that date until the last one transaction register
+
+      - If passing just end date, you'll fetch transactions registers from the first transaction date until the end date specified 
+
+      - Obs: For start and end dates -> paginated with limited 500 results
+
+      - Obs: For single start/end date -> paginated with limited 100 results
+
+      - Obs: If no date is specified, will be return the last 100 transactions
+
+
+      ### Request
+
+      - Url: {{ _.baseURL }}/api/account/bankstatement
+
+      - Method: POST
+
+      - Headers:
+
+      ```json
+
+      {
+        "Content-Type": "applicatin/json"
+      }
+
+      ```
+
+
+      - QueryString 
+
+      ```
+
+      start=2021-01-01  // (Optional) YYYY-MM-DD
+
+      end=2021-02-01    // (Optional) YYYY-MM-DD
+
+      ```
+
+
+      - Body
+
+      ```json
+
+      {
+        "accountId": 2,  // accountId as number
+        "page": 1        // [Optional] page number
+      }
+
+      ```
+
+
+      - Response Body
+
+      ```json
+
+      {
+        "total": "2",
+        "perPage": 100,
+        "page": 1,
+        "lastPage": 1,
+        "data": [ // data has a list of transactions
+          {
+            "id": 3,
+            "value": 21000,
+            "transaction_date": "2021-03-14T17:28:57.478Z"
+          },
+          {
+            "id": 2,
+            "value": 20000,
+            "transaction_date": "2021-01-25T17:27:46.000Z"
+          }
+        ],
+        "metadata": {
+          "total_amount": 41000 // This metadata has a sum of transaction values
+        }
+      }
+
+      ```
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"accountId": 5
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_3057f89aa0f54434bcbb68bfde85f93a
+    authentication: {}
+    metaSortKey: -1615739962349
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_fac49f86dc2c492f936eed873d1d0b63
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615750147274
+    created: 1615747617492
+    url: "{{ _.baseURL }}/api/account/block"
+    name: BlockAccount
+    description: >-
+      Block account endpoint will block some account from accountId:
+
+      - Obs: Accounts blocked cannont query bank statements, balance, make deposits or withdrawns
+
+
+      ### Request
+
+      - Url: {{ _.baseURL }}/api/account/block
+
+      - Method: POST
+
+      - Headers:
+
+      ```json
+
+      {
+        "Content-Type": "applicatin/json"
+      }
+
+      ```
+
+
+      - Body
+
+      ```json
+
+      {
+        "accountId": 2 // accountId as number
+      }
+
+      ```
+
+
+      - Response Body
+
+      ```json
+
+      {
+        "status": "Account has been blocked",
+        "data": {
+          "accountId": 6
+        }
+      }
+
+      ```
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"accountId": 6
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_8e851008535a449db6afbb64972afe72
+    authentication: {}
+    metaSortKey: -1615739962299
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_1bc739c4c6aba19f65bbdf2f8067cd96b34a5d11
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615738820536
+    created: 1615738820536
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1615738820536
+    _type: environment
+  - _id: jar_1bc739c4c6aba19f65bbdf2f8067cd96b34a5d11
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615748864663
+    created: 1615738820543
+    name: Default Jar
+    cookies:
+      - key: adonis-session
+        value: a305e3ce0946ba16fd95be5d35b2296cBEsZGy7N8I2i3OdH0hX58P8aiGXY3ReHQDDjOAC22SRBWWuy3mk3KdiX0ACmV3vYFOexDEf4R8TgkrMWyMxzIVuUVMto3oib0EXp2ZtXm%2BGZaD8x%2FElUcspIWF53Kujn
+        domain: localhost
+        path: /
+        httpOnly: true
+        hostOnly: true
+        creation: 2021-03-14T16:37:27.899Z
+        lastAccessed: 2021-03-14T19:07:44.663Z
+        id: "6061829501320213"
+      - key: XSRF-TOKEN
+        value: 481fcfce6fd2aa2e69e6c7e3ee0ecac3cxw87RFyuCwxA%2FpVx1XWlB6nKl7%2BzUZChIhabryPwlw3Rs8aktqukwJWeUwDt1FODHJ%2BOIfOC5QyHQ6zSHKhdY6px2KpPgydAqP9Ja9Kw9uK%2FiOJW4pExgtveFOEeBcd
+        maxAge: 7200
+        domain: localhost
+        path: /
+        extensions:
+          - SameSite=Strict
+        hostOnly: true
+        creation: 2021-03-14T16:37:27.899Z
+        lastAccessed: 2021-03-14T19:07:44.663Z
+        id: "8911952243044479"
+      - key: adonis-session-values
+        value: 79f228355b2a325d1162cc94099849a0vBauIC5IP5ef%2BpL%2F7iXLjhKJDVuo%2BiyoKiqGDAPs0n55LWzvKD4xIokXbydQ0BoyzAwrR3GBD0mW5r%2F5xDV1YyWUZlnFNeoaWDI4hVkHr41V%2BFoDl19N5AatgP%2FWfQXw8IFQGB45fJd6VGXOgW5RXLXFbnGtIz2TgAUOPFxpjdc%3D
+        domain: localhost
+        path: /
+        httpOnly: true
+        hostOnly: true
+        creation: 2021-03-14T16:37:27.899Z
+        lastAccessed: 2021-03-14T19:07:44.663Z
+        id: "29678752503590533"
+    _type: cookie_jar
+  - _id: spc_baa7eba81c714b14a4ffe8b09e8e7978
+    parentId: wrk_4b1ca8f673224460823c3d75b77c44a9
+    modified: 1615738820277
+    created: 1615738820277
+    fileName: NodeSampleProjectJS
+    contents: ""
+    contentType: yaml
+    _type: api_spec
+  - _id: env_b49b736d57c146f89de9d14fea462b4b
+    parentId: env_1bc739c4c6aba19f65bbdf2f8067cd96b34a5d11
+    modified: 1615739836579
+    created: 1615738830742
+    name: Develop
+    data:
+      baseURL: http://localhost:3333
+    dataPropertyOrder:
+      "&":
+        - baseURL
+    color: null
+    isPrivate: false
+    metaSortKey: 1615738830742
+    _type: environment
