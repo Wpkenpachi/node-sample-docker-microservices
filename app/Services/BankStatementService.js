@@ -4,7 +4,7 @@ const Database = use('Database');
 const moment = require('moment');
 
 class BankStatementService {
-  static async getByStartDate(start, accountId, page) {
+  static async getByStartDate(start, accountId, page = 1) {
     if (moment(start, 'YYYY-MM-DD').isValid()) {
       try {
         return await Database
@@ -21,7 +21,7 @@ class BankStatementService {
     } else return [];
   }
 
-  static async getByEndDate(end, accountId, page) {
+  static async getByEndDate(end, accountId, page = 1) {
     if (moment(end, 'YYYY-MM-DD').isValid()) {
       try {
         return await Database
@@ -38,7 +38,7 @@ class BankStatementService {
     } else return [1];
   }
 
-  static async getByDate(start, end, accountId, page) {
+  static async getByDate(start, end, accountId, page = 1) {
     if (moment(start, 'YYYY-MM-DD').isValid() && moment(end, 'YYYY-MM-DD').isValid()) {
       try {
         return await Database
@@ -54,6 +54,20 @@ class BankStatementService {
         throw new Error(error);
       }
     } else return [];
+  }
+
+  static async getLastHundred(data) {
+    const numberToFetch = 100
+    try {
+      return await Database
+        .table('transactions')
+        .where('account_id', data.accountId)
+        .select('id', 'value', 'transaction_date')
+        .orderBy('id', 'desc')
+        .paginate(1, numberToFetch);
+    } catch (error) {
+      throw new Error(error.message)
+    }
   }
 }
 

@@ -28,7 +28,7 @@ class AccountController {
         data: { accountId }
       });
     } catch (error) {
-      return response.json(error);
+      return response.status(400).json(error);
     }
   }
 
@@ -71,7 +71,7 @@ class AccountController {
         data: { accountId }
       });
     } catch (error) {
-      return response.json(error);
+      return response.status(400).json(error);
     }
   }
 
@@ -91,29 +91,31 @@ class AccountController {
 
     let total_amount = null;
     let transaction = null;
-    if (start && end) {
-      transaction = await BankStatementService.getByDate(start, end, data.accountId, page);
-    } else if (start) {
-      transaction = await BankStatementService.getByStartDate(start, data.accountId, page);
-    } else if (end) {
-      transaction = await BankStatementService.getByEndDate(end, data.accountId, page);
-    } else {
-      console.log('Else')
-      transaction = await Database
-        .table('transactions')
-        .where('account_id', data.accountId)
-        .select('id', 'value', 'transaction_date')
-        .orderBy('id', 'desc')
-        .paginate(page, 100);
-    }
 
-    if (transaction && ('data' in transaction)) {
-      total_amount = (transaction.data.map(trx => trx.value)).reduce((acc, cur) => {
-        return Number(acc) + Number(cur);
-      });
-      transaction.metadata = { total_amount: Number(total_amount) };
+    try {
+      if (start && end) {
+        transaction = await BankStatementService.getByDate(start, end, data.accountId, page);
+      } else if (start) {
+        transaction = await BankStatementService.getByStartDate(start, data.accountId, page);
+      } else if (end) {
+        transaction = await BankStatementService.getByEndDate(end, data.accountId, page);
+      } else {
+        transaction = await BankStatementService.getLastHundred(data)
+      }
+
+      if (transaction && ('data' in transaction)) {
+        total_amount = (transaction.data.map(trx => trx.value)).reduce((acc, cur) => {
+          return Number(acc) + Number(cur);
+        });
+        transaction.metadata = { total_amount: Number(total_amount) };
+      }
+
+      response.json(transaction);
+    } catch (error) {
+      response.status(400).json({
+        error: error.message
+      })
     }
-    response.json(transaction);
   }
 }
 
