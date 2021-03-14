@@ -281,3 +281,7 @@ Block account endpoint will block some account from accountId:
 
 ## Manually Testing
 You can also import [insomnia yml file](node-sample-project-js-insomnia.yaml) to test each endpoints
+
+## Missing to Do / Next Updates
+- [ ] Implement Tests E2E
+- [ ] Tests Coverage
