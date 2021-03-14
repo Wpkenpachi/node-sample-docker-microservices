@@ -29,11 +29,9 @@ class AccountService {
       await trx.rollback();
       throw new Error(error.message)
     }
-
-
   }
 
-  static async fetchBalance(accountId) {
+  static async queryBalance(accountId) {
     try {
       const [balance] = await Database
         .table('accounts')
@@ -43,6 +41,21 @@ class AccountService {
 
       return balance
     } catch (error) {
+      throw new Error(error.message)
+    }
+  }
+
+  static async blockAccount(data) {
+    const trx = await Database.beginTransaction();
+    try {
+      const [accountId] = await trx.table('accounts')
+        .where('id', data.accountId)
+        .update({ active_flag: 0 })
+        .returning('id')
+      await trx.commit()
+      return accountId
+    } catch (error) {
+      await trx.rollback()
       throw new Error(error.message)
     }
   }

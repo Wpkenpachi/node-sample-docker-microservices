@@ -64,16 +64,13 @@ class AccountController {
       return response.status(422).send(validation.messages());
     }
 
-    const trx = await Database.beginTransaction();
     try {
-      const [id] = await trx.table('accounts')
-        .where('id', data.accountId)
-        .update({ active_flag: 0 })
-        .returning('id');
-      await trx.commit();
-      return response.json(id);
+      const accountId = await AccountService.blockAccount(data)
+      return response.json({
+        status: 'Account has been blocked',
+        data: { accountId }
+      });
     } catch (error) {
-      await trx.rollback();
       return response.json(error);
     }
   }
@@ -100,13 +97,14 @@ class AccountController {
       transaction = await BankStatementService.getByStartDate(start, data.accountId, page);
     } else if (end) {
       transaction = await BankStatementService.getByEndDate(end, data.accountId, page);
-      console.log(transaction);
     } else {
+      console.log('Else')
       transaction = await Database
         .table('transactions')
         .where('account_id', data.accountId)
         .select('id', 'value', 'transaction_date')
-        .paginate(page);
+        .orderBy('id', 'desc')
+        .paginate(page, 100);
     }
 
     if (transaction && ('data' in transaction)) {
