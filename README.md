@@ -68,7 +68,7 @@ Create Account endpoint will create behind the scenes:
 ```
 
 - Request Body
-```json
+```bash
 {
   "name": "Wesley Paulo", // Fullname String
   "documentNumber": "04203377099", //  Cpf String
@@ -78,7 +78,7 @@ Create Account endpoint will create behind the scenes:
 ```
 
 - Response Body
-```json
+```bash
 {
   "status": "Account Successfully created",
   "data": {
@@ -102,7 +102,7 @@ Get Account balance endpoint will get an account balance:
 ```
 
 - Body
-```json
+```bash
 {
   "accountId": 2 // accountId as number
 }
@@ -140,7 +140,7 @@ Deposit on Account endpoint will deposit some amount of value on person account,
 
 - Body
 
-```json
+```bash
 
 {
   "accountId": 2, // accountId as number
@@ -210,7 +210,7 @@ end=2021-02-01    // (Optional) YYYY-MM-DD
 
 - Body
 
-```json
+```bash
 
 {
   "accountId": 2,  // accountId as number
@@ -222,7 +222,7 @@ end=2021-02-01    // (Optional) YYYY-MM-DD
 
 - Response Body
 
-```json
+```bash
 
 {
   "total": "2",
@@ -263,7 +263,7 @@ Block account endpoint will block some account from accountId:
 ```
 
 - Body
-```json
+```bash
 {
   "accountId": 2 // accountId as number
 }
