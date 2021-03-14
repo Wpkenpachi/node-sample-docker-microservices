@@ -45,7 +45,9 @@ class AccountController {
 
     try {
       const balance = await AccountService.queryBalance(data.accountId);
-      return response.send({ balance });
+      return response.send({
+        balance
+      });
     } catch (error) {
       return response.status(400).json({
         error: error.message
@@ -66,12 +68,15 @@ class AccountController {
 
     try {
       const accountId = await AccountService.blockAccount(data)
+      if (!accountId) throw new Error('Unavailable Account or Already blocked')
       return response.json({
         status: 'Account has been blocked',
         data: { accountId }
       });
     } catch (error) {
-      return response.status(400).json(error);
+      return response.status(400).json({
+        error: error.message
+      });
     }
   }
 

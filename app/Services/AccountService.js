@@ -33,12 +33,14 @@ class AccountService {
 
   static async queryBalance(accountId) {
     try {
-      const [balance] = await Database
+      const account = await Database
         .table('accounts')
         .where('id', accountId)
         .where('active_flag', 1)
-        .pluck('balance');
+        .first()
 
+      if (!account) throw new Error('Unavailable Account')
+      const balance = account.balance
       return balance
     } catch (error) {
       throw new Error(error.message)
@@ -50,6 +52,7 @@ class AccountService {
     try {
       const [accountId] = await trx.table('accounts')
         .where('id', data.accountId)
+        .where('active_flag', 1)
         .update({ active_flag: 0 })
         .returning('id')
       await trx.commit()

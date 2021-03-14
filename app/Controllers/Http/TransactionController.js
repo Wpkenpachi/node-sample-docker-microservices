@@ -19,11 +19,11 @@ class TransactionController {
       const transactionId = await TransactionService.deposit(data)
 
       return response.json({
+        msg: 'Successfully Deposited',
         data: { transactionId }
       });
     } catch (error) {
       return response.status(400).json({
-        msg: 'Successfully Deposited',
         error: error.message
       });
     }
