@@ -1,18 +1,14 @@
 'use strict'
 
-const Transaction = use('App/Models/Transaction')
 const BankStatementService = use('App/Services/BankStatementService')
 const AccountService = use('App/Services/AccountService')
-const Database = use('Database');
 const { validate } = use('Validator');
 
 class AccountController {
   async create({ request, response }) {
     const data = request.all();
     const validation = await validate(data, {
-      name: 'required',
-      documentNumber: 'required|unique:persons,document_number',
-      bornDate: 'required|date',
+      personId: 'required|integer',
       accountType: 'required|integer'
     });
 

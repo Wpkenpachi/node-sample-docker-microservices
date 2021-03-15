@@ -5,9 +5,6 @@ const Model = use('Model')
 
 class Account extends Model {
 
-    static get table() {
-        return 'accounts';
-    }
 }
 
 module.exports = Account

@@ -19,14 +19,5 @@ const Route = use('Route')
 Route.on('/').render('welcome');
 
 Route.group(function () {
-    Route.post('create', 'AccountController.create');
-    Route.post('balance', 'AccountController.getBalance');
-    Route.post('block', 'AccountController.blockAccount');
-    Route.post('bankstatement', 'AccountController.getBankStatement');
-}).prefix('api/account');
-
-Route.group(function () {
-    Route.post('deposit', 'TransactionController.deposit');
-    Route.post('withdraw', 'TransactionController.withdraw');
-}).prefix('api/transaction');
-
+  Route.post('create', 'PersonController.create');
+}).prefix('api/person');

@@ -4,7 +4,7 @@
 const Schema = use('Schema')
 
 class AccountsSchema extends Schema {
-  up () {
+  up() {
     const AccountType = {
       SAVINGS_ACCOUNT: 1,
       CHECKING_ACCOUNT: 2
@@ -12,7 +12,7 @@ class AccountsSchema extends Schema {
 
     this.create('accounts', (table) => {
       table.increments();
-      table.integer('person_id').references('id').inTable('persons').unsigned();
+      table.integer('person_id').unsigned();
       table.integer('balance').defaultTo(0);
       table.integer('max_daily_withdraw');
       table.boolean('active_flag').defaultTo(true);
@@ -21,7 +21,7 @@ class AccountsSchema extends Schema {
     })
   }
 
-  down () {
+  down() {
     this.drop('accounts')
   }
 }
